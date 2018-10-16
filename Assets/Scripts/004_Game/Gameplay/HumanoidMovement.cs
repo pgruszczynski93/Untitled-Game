@@ -49,7 +49,7 @@ namespace MindworksGames.MyGame
         protected virtual void OnTriggerStay() { }
         protected virtual void OnTriggerExit() { }
 
-        protected virtual void MovePlayer() { }
+        protected virtual void MoveHumanoid() { }
         
 
     }

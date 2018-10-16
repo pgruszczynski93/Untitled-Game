@@ -53,7 +53,7 @@ namespace MindworksGames.MyGame
             }
         }
 
-        protected override void MovePlayer()
+        protected override void MoveHumanoid()
         {
             _currentJoystickDeviation = new Vector3(_joystick.Horizontal, 0, _joystick.Vertical).magnitude;
 
@@ -76,7 +76,7 @@ namespace MindworksGames.MyGame
 
         protected override void FixedUpdate()
         {
-            MovePlayer();
+            MoveHumanoid();
         }
     }
 
