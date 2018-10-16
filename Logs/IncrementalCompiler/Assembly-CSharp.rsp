@@ -323,6 +323,7 @@
 -i:"I:/Unity Projects/Untitled Game/Assets/DownloadedAssets/Virtual Joystick Pack/Scripts/Joysticks/FloatingJoystick.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/DownloadedAssets/Virtual Joystick Pack/Scripts/Joysticks/VariableJoystick.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/CameraController.cs"
+-i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/EnemyMovement.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/FPSDisplay.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/PlayerMovement.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/Tools/MeshCombiner.cs"
