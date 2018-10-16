@@ -4,36 +4,32 @@ using UnityEngine;
 
 namespace MindworksGames.MyGame
 {
-
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : HumanoidMovement
     {
 
-        readonly Vector3 right = new Vector3(1, 0, 0);
-        readonly Vector3 forward = new Vector3(0, 0, 1);
-        readonly Vector3 zero = new Vector3(0, 0, 0);
-
-        float _dt;
         float _currentJoystickDeviation;
         [Range(0, 1)] [SerializeField] float _joystickThreshold;
-        [SerializeField] float _baseMoveSpeed;
-        [SerializeField] float _currentMoveSpeed;
-        [SerializeField] float _runMoveSpeed;
-        [SerializeField] float _smoothRotationFactor;
 
-        Vector3 _moveVector;
-        Quaternion _forwardRotation;
-        Quaternion _smoothedRotation;
-        Rigidbody _rb;
-        [SerializeField] Animator _animator;
         [SerializeField] Joystick _joystick;
 
-        void Start()
+        protected override void Start()
         {
-            _runMoveSpeed = 2.0f * _baseMoveSpeed;
+            _runMoveSpeed = _runMultiplerValue * _baseMoveSpeed;
             _rb = GetComponent<Rigidbody>();
         }
 
-        void SetMovementAnimator() {
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+        }
+
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+        }
+
+        protected override void SetMovementAnimator() {
 
             if (_currentJoystickDeviation > 0.8f)
             {
@@ -53,7 +49,7 @@ namespace MindworksGames.MyGame
 
         }
 
-        void SetAttackAnimator()
+        protected override void SetAttackAnimator()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -61,18 +57,18 @@ namespace MindworksGames.MyGame
             }
         }
 
-        void MovePlayer()
+        protected override void MovePlayer()
         {
             _currentJoystickDeviation = new Vector3(_joystick.Horizontal, 0, _joystick.Vertical).magnitude;
-            SetMovementAnimator();
-            SetAttackAnimator();
+
+            OnAnimationInvoked?.Invoke();
 
             if (_currentJoystickDeviation > _joystickThreshold)
             {
-                _moveVector = (right * _joystick.Horizontal + forward * _joystick.Vertical).normalized;
+                _moveVector = (MathHelper.rightVec * _joystick.Horizontal + MathHelper.forwardVec * _joystick.Vertical).normalized;
                 _dt = Time.fixedDeltaTime;
 
-                if (_moveVector != zero)
+                if (_moveVector != MathHelper.zeroVec)
                 {
                     _forwardRotation = Quaternion.LookRotation(_moveVector);
                     _smoothedRotation = Quaternion.Slerp(transform.rotation, _forwardRotation, _smoothRotationFactor * _dt);
@@ -82,7 +78,7 @@ namespace MindworksGames.MyGame
             }
         }
 
-        void FixedUpdate()
+        protected override void FixedUpdate()
         {
             MovePlayer();
         }
