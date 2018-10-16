@@ -19,7 +19,7 @@ namespace MindworksGames.MyGame
         protected Vector3 _moveVector;
         protected Quaternion _forwardRotation;
         protected Quaternion _smoothedRotation;
-        protected Rigidbody _rb;
+        [SerializeField] protected Rigidbody _rb;
         [SerializeField] protected Animator _animator;
         
 
@@ -38,7 +38,12 @@ namespace MindworksGames.MyGame
             OnAnimationInvoked -= SetAttackAnimator;
         }
 
-        protected virtual void Start() { }
+        protected virtual void Start()
+        {
+            _runMoveSpeed = _runMultiplerValue * _baseMoveSpeed;
+            _rb = GetComponent<Rigidbody>();
+        }
+
         protected virtual void FixedUpdate() { }
         protected virtual void OnTriggerEnter() { }
         protected virtual void OnTriggerStay() { }
