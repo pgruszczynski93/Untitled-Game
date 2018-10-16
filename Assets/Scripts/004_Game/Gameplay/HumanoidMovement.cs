@@ -6,7 +6,6 @@ namespace MindworksGames.MyGame
 {
     public abstract class HumanoidMovement : MonoBehaviour
     {
-
         protected System.Action OnAnimationInvoked = delegate { };
 
         protected float _dt;
@@ -40,8 +39,13 @@ namespace MindworksGames.MyGame
         }
 
         protected virtual void Start() { }
-        protected virtual void MovePlayer() { }
         protected virtual void FixedUpdate() { }
+        protected virtual void OnTriggerEnter() { }
+        protected virtual void OnTriggerStay() { }
+        protected virtual void OnTriggerExit() { }
+
+        protected virtual void MovePlayer() { }
+        
 
     }
 }

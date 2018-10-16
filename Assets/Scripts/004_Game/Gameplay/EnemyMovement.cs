@@ -1,16 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿
 
-public class EnemyMovement : MonoBehaviour {
+namespace MindworksGames.MyGame
+{
+    public class EnemyMovement : HumanoidMovement
+    {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+        protected override void SetAttackAnimator()
+        {
+        }
+
+        protected override void SetMovementAnimator()
+        {
+        }
+
+    }
+
 }

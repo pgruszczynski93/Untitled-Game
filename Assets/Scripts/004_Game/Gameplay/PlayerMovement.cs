@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MindworksGames.MyGame
 {
@@ -14,15 +12,13 @@ namespace MindworksGames.MyGame
 
         protected override void Start()
         {
-            _runMoveSpeed = _runMultiplerValue * _baseMoveSpeed;
-            _rb = GetComponent<Rigidbody>();
+            base.Start();
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
         }
-
 
         protected override void OnDisable()
         {
