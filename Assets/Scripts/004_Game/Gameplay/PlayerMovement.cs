@@ -4,6 +4,10 @@ namespace MindworksGames.MyGame
 {
     public class PlayerMovement : HumanoidMovement
     {
+        public event HumanoidEventHandler OnPlayerMovementStarted;
+        public event HumanoidEventHandler OnPlayerLevelUp;
+        public event HumanoidEventHandler OnPlayerAttack;
+        public event HumanoidEventHandler OnPlayerDie;
 
         float _currentJoystickDeviation;
         [Range(0, 1)] [SerializeField] float _joystickThreshold;
@@ -18,15 +22,23 @@ namespace MindworksGames.MyGame
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            OnPlayerMovementStarted += CalcJoystickDeviation;
+            OnPlayerMovementStarted += CallOnAnimationInvoked;
+            OnPlayerMovementStarted += MoveHumanoid;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+
+            OnPlayerMovementStarted -= CalcJoystickDeviation;
+            OnPlayerMovementStarted -= CallOnAnimationInvoked;
+            OnPlayerMovementStarted -= MoveHumanoid;
         }
 
-        protected override void SetMovementAnimator() {
-
+        protected override void SetMovementAnimator()
+        {
             if (_currentJoystickDeviation > 0.8f)
             {
                 _animator.SetBool("IsRunning", true);
@@ -42,7 +54,6 @@ namespace MindworksGames.MyGame
                 _animator.SetBool("IsRunning", false);
                 _animator.SetBool("IsWalking", false);
             }
-
         }
 
         protected override void SetAttackAnimator()
@@ -53,12 +64,13 @@ namespace MindworksGames.MyGame
             }
         }
 
+        void CalcJoystickDeviation()
+        {
+            _currentJoystickDeviation = new Vector3(_joystick.Horizontal, 0, _joystick.Vertical).sqrMagnitude;
+        }
+
         protected override void MoveHumanoid()
         {
-            _currentJoystickDeviation = new Vector3(_joystick.Horizontal, 0, _joystick.Vertical).magnitude;
-
-            OnAnimationInvoked?.Invoke();
-
             if (_currentJoystickDeviation > _joystickThreshold)
             {
                 _moveVector = (MathHelper.rightVec * _joystick.Horizontal + MathHelper.forwardVec * _joystick.Vertical).normalized;
@@ -74,9 +86,15 @@ namespace MindworksGames.MyGame
             }
         }
 
+
+        public void CallOnPlayerMovementStarted()
+        {
+            OnPlayerMovementStarted?.Invoke();
+        }
+         
         protected override void FixedUpdate()
         {
-            MoveHumanoid();
+            CallOnPlayerMovementStarted();
         }
     }
 

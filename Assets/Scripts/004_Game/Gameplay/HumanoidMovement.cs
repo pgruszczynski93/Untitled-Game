@@ -6,7 +6,9 @@ namespace MindworksGames.MyGame
 {
     public abstract class HumanoidMovement : MonoBehaviour
     {
-        protected System.Action OnAnimationInvoked = delegate { };
+
+        public delegate void HumanoidEventHandler();
+        public event HumanoidEventHandler OnAnimationInvoked;
 
         protected float _dt;
         [SerializeField] protected float _baseMoveSpeed;
@@ -17,8 +19,10 @@ namespace MindworksGames.MyGame
 
 
         protected Vector3 _moveVector;
+        protected Vector3 _currentTargetPos;
         protected Quaternion _forwardRotation;
         protected Quaternion _smoothedRotation;
+        [SerializeField] protected Transform _currentTarget;
         [SerializeField] protected Rigidbody _rb;
         [SerializeField] protected Animator _animator;
         
@@ -38,20 +42,29 @@ namespace MindworksGames.MyGame
             OnAnimationInvoked -= SetAttackAnimator;
         }
 
+
         protected virtual void Start()
+        {
+            SetInitRefs();
+        }
+
+        protected virtual void FixedUpdate() { }
+        protected virtual void OnTriggerEnter(Collider col) { }
+        protected virtual void OnTriggerStay(Collider col) { }
+        protected virtual void OnTriggerExit(Collider col) { }
+
+        protected virtual void MoveHumanoid() { }
+
+        public void CallOnAnimationInvoked()
+        {
+            OnAnimationInvoked?.Invoke();
+        }
+
+        void SetInitRefs()
         {
             _runMoveSpeed = _runMultiplerValue * _baseMoveSpeed;
             _rb = GetComponent<Rigidbody>();
         }
-
-        protected virtual void FixedUpdate() { }
-        protected virtual void OnTriggerEnter() { }
-        protected virtual void OnTriggerStay() { }
-        protected virtual void OnTriggerExit() { }
-
-        protected virtual void MoveHumanoid() { }
-        
-
     }
 }
 

@@ -4,6 +4,10 @@ namespace MindworksGames.MyGame
 {
     public class CameraController : MonoBehaviour
     {
+
+        public delegate void MainCameraEventHandler();
+        public event MainCameraEventHandler OnCameraTracking;
+
         float _dt;
         [SerializeField] float _smoothFactor;
 
@@ -12,14 +16,30 @@ namespace MindworksGames.MyGame
         Vector3 _smoothedPosition;
         [SerializeField] Transform _target;
 
-        void Start()
+        void SetInitRefs()
         {
             _offset = _target.position - transform.position;
         }
 
+        void OnEnable()
+        {
+            SetInitRefs();
+            OnCameraTracking += MoveCamera;
+        }
+
+        void OnDisable()
+        {
+            OnCameraTracking -= MoveCamera;
+        }
+
+        void CallOnCameraTracking()
+        {
+            OnCameraTracking?.Invoke();
+        }
+
         void FixedUpdate()
         {
-            MoveCamera();
+            CallOnCameraTracking();
         }
 
         void MoveCamera()
