@@ -1,40 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MindworksGames.MyGame
 {
     public class PlayerAnimation : HumanoidAnimation
     {
 
-        public delegate void PlayerAnimationsEventHandler(float inputValue);
-        public event PlayerAnimationsEventHandler OnAnimationsPlaying;
-
         [HideInInspector] public float walkAnimationThreshold;
         [HideInInspector] public float runAnimationThreshold;
+
+        [SerializeField] PlayerMaster _playerMaster;
 
         void SetInitRefs()
         {
             walkAnimationThreshold = 0.3f;
             runAnimationThreshold = 0.8f;
+            _playerMaster = GetComponent<PlayerMaster>();
         }
+
 
         void OnEnable()
         {
-            OnAnimationsPlaying += SetMovementAnimation;
-            OnAnimationsPlaying += SetAttackAnimation;
+            SetInitRefs();
+            _playerMaster.OnAnimationsPlaying += SetMovementAnimation;
+            _playerMaster.OnAnimationsPlaying += SetAttackAnimation;
         }
 
         void OnDisable()
         {
-            OnAnimationsPlaying -= SetMovementAnimation;
-            OnAnimationsPlaying -= SetAttackAnimation;
+            _playerMaster.OnAnimationsPlaying -= SetMovementAnimation;
+            _playerMaster.OnAnimationsPlaying -= SetAttackAnimation;
         }
 
-        void Start()
-        {
-            SetInitRefs();
-        }
 
         protected override void SetAttackAnimation(float inputValue)
         {
@@ -60,12 +56,6 @@ namespace MindworksGames.MyGame
                 _animator.SetBool("IsWalking", false);
             }
         }
-
-        public void CallOnAnimationsPlaying(float inputVal)
-        {
-            OnAnimationsPlaying?.Invoke(inputVal);
-        }
-
     }
 }
 

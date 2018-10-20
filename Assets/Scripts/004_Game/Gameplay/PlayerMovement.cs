@@ -4,41 +4,37 @@ namespace MindworksGames.MyGame
 {
     public class PlayerMovement : HumanoidMovement
     {
-        public event HumanoidEventHandler OnPlayerMoving;
-        public event HumanoidEventHandler OnPlayerLevelUp;
-        public event HumanoidEventHandler OnPlayerAttack;
-        public event HumanoidEventHandler OnPlayerDie;
 
         float _currentJoystickDeviation;
         [Range(0, 1)] [SerializeField] float _joystickThreshold;
 
         [SerializeField] Joystick _joystick;
-        [SerializeField] PlayerAnimation _animationController;        
+        [SerializeField] PlayerMaster _playerMaster;
 
-        protected override void Start()
+
+        protected override void SetInitRefs()
         {
-            base.Start();
-
-            _animationController = GetComponent<PlayerAnimation>();
-            _animationController.walkAnimationThreshold = _joystickThreshold; 
+            base.SetInitRefs();
+            _playerMaster = GetComponent<PlayerMaster>();
         }
 
         void OnEnable()
         {
-            OnPlayerMoving += MoveHumanoid;
+            SetInitRefs();
+
+            _playerMaster.OnPlayerMoving += MoveHumanoid;
         }
 
         void OnDisable()
         {
-            OnPlayerMoving -= MoveHumanoid;
+            _playerMaster.OnPlayerMoving -= MoveHumanoid;
         }
-
 
         protected override void MoveHumanoid()
         {
             _currentJoystickDeviation = new Vector3(_joystick.Horizontal, 0, _joystick.Vertical).sqrMagnitude;
 
-            _animationController.CallOnAnimationsPlaying(_currentJoystickDeviation);
+            _playerMaster.CallOnAnimationsPlaying(_currentJoystickDeviation);
 
             if (_currentJoystickDeviation > _joystickThreshold)
             {
@@ -56,31 +52,6 @@ namespace MindworksGames.MyGame
                     _rb.MoveRotation(_forwardRotation);
                 }
             }
-        }
-
-        public void CallOnPlayerMovementStarted()
-        {
-            OnPlayerMoving?.Invoke();
-        }
-
-        public void CallOnPlayerLevelUp()
-        {
-            OnPlayerLevelUp?.Invoke();
-        }
-
-        public void CallOnPlayerAttack()
-        {
-            OnPlayerAttack?.Invoke();
-        }
-
-        public void CallOnPlayerDie()
-        {
-            OnPlayerDie?.Invoke();
-        }
-
-        protected override void FixedUpdate()
-        {
-            CallOnPlayerMovementStarted();
         }
     }
 

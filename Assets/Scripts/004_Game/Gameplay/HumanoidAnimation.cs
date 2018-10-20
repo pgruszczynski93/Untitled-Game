@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MindworksGames.MyGame
 {
-    public class HumanoidAnimation : MonoBehaviour
+    public abstract class HumanoidAnimation : MonoBehaviour
     {
+
         [SerializeField] protected Animator _animator;
 
         protected virtual void SetMovementAnimation() { }

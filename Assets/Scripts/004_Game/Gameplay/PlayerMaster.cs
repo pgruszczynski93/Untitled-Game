@@ -2,15 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMaster : MonoBehaviour {
+namespace MindworksGames.MyGame
+{
+    public class PlayerMaster : HumanoidMaster
+    {
+        public delegate void PlayerAnimationsEventHandler(float inputValue);
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        public event HumanoidEventHandler OnPlayerMoving;
+        public event HumanoidEventHandler OnPlayerLevelUp;
+        public event HumanoidEventHandler OnPlayerAttack;
+        public event HumanoidEventHandler OnPlayerDie;
+        public event PlayerAnimationsEventHandler OnAnimationsPlaying;
+
+        public void CallOnPlayerMoving()
+        {
+            OnPlayerMoving?.Invoke();
+        }
+
+        public void CallOnPlayerLevelUp()
+        {
+            OnPlayerLevelUp?.Invoke();
+        }
+
+        public void CallOnPlayerAttack()
+        {
+            OnPlayerAttack?.Invoke();
+        }
+
+        public void CallOnPlayerDie()
+        {
+            OnPlayerDie?.Invoke();
+        }
+
+        public void CallOnAnimationsPlaying(float inputVal)
+        {
+            OnAnimationsPlaying?.Invoke(inputVal);
+        }
+
+        void FixedUpdate()
+        {
+            CallOnPlayerMoving();
+        }
+    }
+
 }
