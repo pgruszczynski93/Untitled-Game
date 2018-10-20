@@ -1,19 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 namespace MindworksGames.MyGame
 {
-    public class EnemyAnimation : MonoBehaviour
+    public class EnemyAnimation : HumanoidAnimation
     {
-        public delegate void EnemyAnimationsEventHandler();
-        public event EnemyAnimationsEventHandler OnAnimationsInvoked;
 
-        public void CallOnAnimationsInvoked()
-        {
-            OnAnimationsInvoked?.Invoke();
-        }
+        [SerializeField] EnemyMaster _enemyMaster;
+
+
     }
 }
 

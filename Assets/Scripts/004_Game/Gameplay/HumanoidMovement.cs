@@ -15,7 +15,6 @@ namespace MindworksGames.MyGame
         protected Vector3 _currentTargetPos;
         protected Quaternion _forwardRotation;
         protected Quaternion _smoothedRotation;
-        [SerializeField] protected Transform _currentTarget;
         [SerializeField] protected Rigidbody _rb;
 
         protected virtual void MoveHumanoid() { }
