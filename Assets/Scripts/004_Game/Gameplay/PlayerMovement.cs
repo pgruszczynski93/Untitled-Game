@@ -4,7 +4,7 @@ namespace MindworksGames.MyGame
 {
     public class PlayerMovement : HumanoidMovement
     {
-        public event HumanoidEventHandler OnPlayerMovementStarted;
+        public event HumanoidEventHandler OnPlayerMoving;
         public event HumanoidEventHandler OnPlayerLevelUp;
         public event HumanoidEventHandler OnPlayerAttack;
         public event HumanoidEventHandler OnPlayerDie;
@@ -13,68 +13,40 @@ namespace MindworksGames.MyGame
         [Range(0, 1)] [SerializeField] float _joystickThreshold;
 
         [SerializeField] Joystick _joystick;
+        [SerializeField] PlayerAnimation _animationController;        
 
         protected override void Start()
         {
             base.Start();
+
+            _animationController = GetComponent<PlayerAnimation>();
+            _animationController.walkAnimationThreshold = _joystickThreshold; 
         }
 
-        protected override void OnEnable()
+        void OnEnable()
         {
-            base.OnEnable();
-
-            OnPlayerMovementStarted += CalcJoystickDeviation;
-            OnPlayerMovementStarted += CallOnAnimationInvoked;
-            OnPlayerMovementStarted += MoveHumanoid;
+            OnPlayerMoving += MoveHumanoid;
         }
 
-        protected override void OnDisable()
+        void OnDisable()
         {
-            base.OnDisable();
-
-            OnPlayerMovementStarted -= CalcJoystickDeviation;
-            OnPlayerMovementStarted -= CallOnAnimationInvoked;
-            OnPlayerMovementStarted -= MoveHumanoid;
+            OnPlayerMoving -= MoveHumanoid;
         }
 
-        protected override void SetMovementAnimator()
-        {
-            if (_currentJoystickDeviation > 0.8f)
-            {
-                _animator.SetBool("IsRunning", true);
-                _currentMoveSpeed = _runMoveSpeed;
-            }
-            else if (_currentJoystickDeviation > _joystickThreshold && _currentJoystickDeviation <= 0.8f)
-            {
-                _animator.SetBool("IsWalking", true);
-                _currentMoveSpeed = _baseMoveSpeed;
-            }
-            else
-            {
-                _animator.SetBool("IsRunning", false);
-                _animator.SetBool("IsWalking", false);
-            }
-        }
-
-        protected override void SetAttackAnimator()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _animator.SetTrigger("Attack01");
-            }
-        }
-
-        void CalcJoystickDeviation()
-        {
-            _currentJoystickDeviation = new Vector3(_joystick.Horizontal, 0, _joystick.Vertical).sqrMagnitude;
-        }
 
         protected override void MoveHumanoid()
         {
+            _currentJoystickDeviation = new Vector3(_joystick.Horizontal, 0, _joystick.Vertical).sqrMagnitude;
+
+            _animationController.CallOnAnimationsPlaying(_currentJoystickDeviation);
+
             if (_currentJoystickDeviation > _joystickThreshold)
             {
                 _moveVector = (MathHelper.rightVec * _joystick.Horizontal + MathHelper.forwardVec * _joystick.Vertical).normalized;
                 _dt = Time.fixedDeltaTime;
+                _currentMoveSpeed = (_currentJoystickDeviation > 0.8f) ? 
+                                    _runMoveSpeed : ((_currentJoystickDeviation > _joystickThreshold && _currentJoystickDeviation <= 0.8f) ? 
+                                    _baseMoveSpeed : 0f);
 
                 if (_moveVector != MathHelper.zeroVec)
                 {
@@ -86,12 +58,26 @@ namespace MindworksGames.MyGame
             }
         }
 
-
         public void CallOnPlayerMovementStarted()
         {
-            OnPlayerMovementStarted?.Invoke();
+            OnPlayerMoving?.Invoke();
         }
-         
+
+        public void CallOnPlayerLevelUp()
+        {
+            OnPlayerLevelUp?.Invoke();
+        }
+
+        public void CallOnPlayerAttack()
+        {
+            OnPlayerAttack?.Invoke();
+        }
+
+        public void CallOnPlayerDie()
+        {
+            OnPlayerDie?.Invoke();
+        }
+
         protected override void FixedUpdate()
         {
             CallOnPlayerMovementStarted();

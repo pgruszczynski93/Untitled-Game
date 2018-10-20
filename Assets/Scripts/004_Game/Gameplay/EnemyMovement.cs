@@ -8,10 +8,17 @@ namespace MindworksGames.MyGame
     public class EnemyMovement : HumanoidMovement
     {
 
-        public HumanoidEventHandler OnEnemyTargetDetected;
-        public HumanoidEventHandler OnEnemyReachedTarget;
-        public HumanoidEventHandler OnEnemyAttack;
+        public delegate void NavTargetEventHandler(Transform myTarget);
+        public event NavTargetEventHandler OnEnemySetNavTarget;
+
+        public delegate void EnemyHealthEventHandler(float health);
+        public event EnemyHealthEventHandler OnEnemyHealthChanged;
+
         public HumanoidEventHandler OnEnemyDie;
+        public HumanoidEventHandler OnEnemyMoving;
+        public HumanoidEventHandler OnEnemyReachedNavTarget;
+        public HumanoidEventHandler OnEnemyAttack;
+        public HumanoidEventHandler OnEnemyTargetLost;
 
         float _randomWalkDistance;
 
@@ -28,7 +35,7 @@ namespace MindworksGames.MyGame
         {
             base.Start();
             SetInitRefs();
-            StartCoroutine(RandomizeMoveDirection());
+            StartCoroutine(RandomizeMoveDirectionRoutine());
         }
 
         void SetInitRefs()
@@ -41,14 +48,6 @@ namespace MindworksGames.MyGame
             transform.rotation = Quaternion.Euler(0, _headingAngle, 0);
         }
 
-        protected override void SetAttackAnimator()
-        {
-        }
-
-        protected override void SetMovementAnimator()
-        {
-        }
-
         //protected override void MoveHumanoid()
         //{
         //    _currentTargetPos = _currentTarget.position;
@@ -58,6 +57,38 @@ namespace MindworksGames.MyGame
         //    _rb.MoveRotation(_smoothedRotation);
         //}
 
+
+        public void CallOnEnemyDie()
+        {
+            OnEnemyDie?.Invoke();
+        }
+
+        public void CallOnEnemyMoving()
+        {
+            OnEnemyMoving?.Invoke();
+        }
+
+        public void CallOnEnemyReachedNavTarget()
+        {
+            OnEnemyReachedNavTarget?.Invoke();
+        }
+
+        public void CallOnEnemyAttack()
+        {
+            OnEnemyAttack?.Invoke();
+        }
+
+        public void CallOnEnemyTargetLost()
+        {
+            OnEnemyTargetLost?.Invoke();
+        }
+
+        public void CallOnEnemySetNavTarget(Transform target)
+        {
+            OnEnemySetNavTarget?.Invoke(target);
+
+            _currentTarget = target;
+        }
 
         protected override void OnTriggerEnter(Collider col)
         {
@@ -83,7 +114,7 @@ namespace MindworksGames.MyGame
             transform.rotation = Quaternion.Euler(_targetRotation);
         }
 
-        IEnumerator RandomizeMoveDirection()
+        IEnumerator RandomizeMoveDirectionRoutine()
         {
             while (true)
             {

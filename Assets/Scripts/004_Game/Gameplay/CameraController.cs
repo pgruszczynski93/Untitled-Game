@@ -4,7 +4,6 @@ namespace MindworksGames.MyGame
 {
     public class CameraController : MonoBehaviour
     {
-
         public delegate void MainCameraEventHandler();
         public event MainCameraEventHandler OnCameraTracking;
 
