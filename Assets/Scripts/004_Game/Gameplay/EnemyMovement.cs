@@ -23,11 +23,16 @@ namespace MindworksGames.MyGame
         void OnEnable()
         {
             SetInitRefs();
+
+            //_enemyMaster.OnEnemyTargetLost += StartRandomizeDirection;
+            //_enemyMaster.OnEnemySetNavTarget += StopRandomizeDirection;
+
         }
 
         void OnDisable()
         {
-            
+            //_enemyMaster.OnEnemyTargetLost -= StartRandomizeDirection;
+            //_enemyMaster.OnEnemySetNavTarget -= StopRandomizeDirection;
         }
 
         void Start()
@@ -64,6 +69,17 @@ namespace MindworksGames.MyGame
                 ChangeHeadingAngle();
                 yield return new WaitForSeconds(Random.Range(1, 3));
             }
+        }
+
+        void StartRandomizeDirection()
+        {
+            StartCoroutine(RandomizeMoveDirectionRoutine());
+        }
+
+        void StopRandomizeDirection(Transform target)
+        {
+            print("STOP RANDOMIZE");
+            StopCoroutine(RandomizeMoveDirectionRoutine());
         }
 
     }
