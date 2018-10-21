@@ -331,6 +331,7 @@
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/Gameplay/Enemies classes/EnemyMovement.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/Gameplay/Enemies classes/EnemyPlayerDetection.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/Gameplay/Enemies classes/EnemyPursuit.cs"
+-i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/Gameplay/Enemies classes/EnemyTargetReached.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/Gameplay/MathHelper.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/Gameplay/Player classes/PlayerAnimation.cs"
 -i:"I:/Unity Projects/Untitled Game/Assets/Scripts/004_Game/Gameplay/Player classes/PlayerMaster.cs"

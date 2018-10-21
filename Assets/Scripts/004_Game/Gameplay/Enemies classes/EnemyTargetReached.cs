@@ -3,33 +3,33 @@ using UnityEngine.AI;
 
 namespace MindworksGames.MyGame
 {
-    public class EnemyPursuit : MonoBehaviour
+    public class EnemyTargetReached : MonoBehaviour
     {
 
         [SerializeField] float _checkRate;
         [SerializeField] float _nextCheck;
 
-        [SerializeField] NavMeshAgent _navMeshAgent;
         [SerializeField] EnemyMaster _enemyMaster;
-
+        [SerializeField] NavMeshAgent _navMeshAgent;
 
         void SetInitRefs()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _enemyMaster = GetComponent<EnemyMaster>();
-            _checkRate = Random.Range(0.1f, 0.2f);
-
+            _checkRate = Random.Range(0.3f, 0.4f);
         }
-
 
         void OnEnable()
         {
             SetInitRefs();
+            _enemyMaster.OnEnemyDie += DisableScript;
         }
 
         void OnDisable()
         {
+            _enemyMaster.OnEnemyDie -= DisableScript;
         }
+
 
         void Update()
         {
@@ -37,34 +37,27 @@ namespace MindworksGames.MyGame
             {
                 _nextCheck = Time.time + _checkRate;
 
-                TryToChaseTarget();
+                CheckIsTargetReached();
             }
-
-            _enemyMaster.CallOnAnimationsPlaying();
-
         }
 
-        void TryToChaseTarget()
+        void CheckIsTargetReached()
         {
-
-            if (_enemyMaster.CurrentTarget != null && _navMeshAgent!=null && !_enemyMaster.isNavPaused)
+            if (_enemyMaster.isPursuing)
             {
-                _navMeshAgent.SetDestination(_enemyMaster.CurrentTarget.position);
-
-                if (_navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
+                if(_navMeshAgent.remainingDistance < _navMeshAgent.stoppingDistance)
                 {
-                    _enemyMaster.isPursuing = true;
+                    _enemyMaster.isPursuing = false;
+                    _enemyMaster.CallOnEnemyReachedNavTarget();
                 }
             }
         }
 
         void DisableScript()
         {
-            if (_navMeshAgent != null)
-            {
-                _navMeshAgent.enabled = false;
-            }
             enabled = false;
         }
+
     }
+
 }
