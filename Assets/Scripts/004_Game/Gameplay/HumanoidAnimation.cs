@@ -11,8 +11,15 @@ namespace MindworksGames.MyGame
         protected virtual void SetMovementAnimation(float joystickValue) { }
         protected virtual void SetAttackAnimation() { }
         protected virtual void SetAttackAnimation(float joystickValue) { }
-        protected virtual void DisableScript() { }
 
+        protected void DisableScript()
+        {
+            if (_animator != null)
+            {
+                _animator.enabled = false;
+            }
+            enabled = false;
+        }
     }
 
 }

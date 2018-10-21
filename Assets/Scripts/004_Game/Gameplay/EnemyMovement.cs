@@ -7,8 +7,6 @@ namespace MindworksGames.MyGame
     public class EnemyMovement : HumanoidMovement
     {
 
-        float _randomWalkDistance;
-
         [SerializeField] float _headingCeil;
         [SerializeField] float _headingFloor;
         [SerializeField] float _headingAngle;
@@ -16,7 +14,6 @@ namespace MindworksGames.MyGame
 
         SphereCollider _playerTrigger;
         [SerializeField] Vector3 _targetRotation;
-        [SerializeField] NavMeshAgent _navMeshAgent;
         [SerializeField] EnemyMaster _enemyMaster;
 
 
@@ -45,7 +42,6 @@ namespace MindworksGames.MyGame
             base.SetInitRefs(); 
 
             _playerTrigger = GetComponent<SphereCollider>();
-            _navMeshAgent = GetComponent<NavMeshAgent>();
             _enemyMaster = GetComponent<EnemyMaster>();
 
             _headingAngle = Random.Range(0, 360);

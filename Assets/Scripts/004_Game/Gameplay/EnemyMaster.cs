@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MindworksGames.MyGame
 {
     public class EnemyMaster : HumanoidMaster
     {
+
         public delegate void NavTargetEventHandler(Transform myTarget);
         public event NavTargetEventHandler OnEnemySetNavTarget;
 
@@ -19,6 +18,16 @@ namespace MindworksGames.MyGame
         public event HumanoidEventHandler OnEnemyTargetLost;
         public event HumanoidEventHandler OnAnimationsPlaying;
 
+        public bool isPursuing;
+        public bool isNavPaused;
+
+        public Transform CurrentTarget
+        {
+            get
+            {
+                return _currentTarget;
+            }
+        }
 
         void SetInitRefs()
         {

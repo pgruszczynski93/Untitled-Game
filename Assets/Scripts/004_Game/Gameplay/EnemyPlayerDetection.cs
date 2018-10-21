@@ -8,8 +8,7 @@ namespace MindworksGames.MyGame
         [SerializeField] float _nextCheck;
         [SerializeField] float _detectRadius;
 
-        Vector3 _debugPLAYERHEIGHT = new Vector3(0, -1.3f, 0);
-
+        Vector3 _playerColliderHeight;
         RaycastHit _hitInfo;
         [SerializeField] EnemyMaster _enemyMaster;
         [SerializeField] Transform _enemyTransform;
@@ -23,8 +22,9 @@ namespace MindworksGames.MyGame
             _enemyMaster = GetComponent<EnemyMaster>();
             _enemyTransform = transform;
             _checkRate = Random.Range(0.8f, 1.2f);
+            _playerColliderHeight = new Vector3(0, -1.3f, 0);
 
-            if(_enemyHead == null)
+            if (_enemyHead == null)
             {
                 _enemyHead = _enemyTransform;
             }
@@ -91,9 +91,9 @@ namespace MindworksGames.MyGame
 
         bool IsTargetVisible(Transform target)
         {
-            Debug.DrawLine(_enemyHead.position, target.position - _debugPLAYERHEIGHT, Color.blue);
+            Debug.DrawLine(_enemyHead.position, target.position - _playerColliderHeight, Color.blue);
 
-            if (Physics.Linecast(_enemyHead.position, target.position - _debugPLAYERHEIGHT, out _hitInfo, _sightLayerMask))
+            if (Physics.Linecast(_enemyHead.position, target.position - _playerColliderHeight, out _hitInfo, _sightLayerMask))
             {
 
                 if(_hitInfo.transform.position == target.position)

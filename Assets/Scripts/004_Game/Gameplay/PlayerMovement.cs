@@ -52,6 +52,11 @@ namespace MindworksGames.MyGame
                     _rb.MoveRotation(_forwardRotation);
                 }
             }
+            else
+            {
+                _rb.velocity = MathHelper.zeroVec;
+                _rb.angularVelocity = MathHelper.zeroVec;
+            }
         }
     }
 

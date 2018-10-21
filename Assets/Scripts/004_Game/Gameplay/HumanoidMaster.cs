@@ -9,6 +9,7 @@ namespace MindworksGames.MyGame
 
         [SerializeField] protected Transform _currentTarget;
 
+
     }
 }
 

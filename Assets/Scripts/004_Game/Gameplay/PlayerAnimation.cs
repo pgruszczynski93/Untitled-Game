@@ -17,18 +17,20 @@ namespace MindworksGames.MyGame
             _playerMaster = GetComponent<PlayerMaster>();
         }
 
-
         void OnEnable()
         {
             SetInitRefs();
             _playerMaster.OnAnimationsPlaying += SetMovementAnimation;
             _playerMaster.OnAnimationsPlaying += SetAttackAnimation;
+            _playerMaster.OnPlayerDie += DisableScript;
+
         }
 
         void OnDisable()
         {
             _playerMaster.OnAnimationsPlaying -= SetMovementAnimation;
             _playerMaster.OnAnimationsPlaying -= SetAttackAnimation;
+            _playerMaster.OnPlayerDie -= DisableScript;
         }
 
 
