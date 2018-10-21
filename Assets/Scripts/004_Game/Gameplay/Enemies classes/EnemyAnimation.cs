@@ -18,6 +18,7 @@ namespace MindworksGames.MyGame
 
             _enemyMaster.OnAnimationsPlaying += SetMovementAnimation;
             _enemyMaster.OnAnimationsPlaying += SetAttackAnimation;
+            _enemyMaster.OnEnemyTargetLost += SetIdleAnimation;
             _enemyMaster.OnEnemyDie += DisableScript;
         }
 
@@ -25,6 +26,7 @@ namespace MindworksGames.MyGame
         {
             _enemyMaster.OnAnimationsPlaying -= SetMovementAnimation;
             _enemyMaster.OnAnimationsPlaying -= SetAttackAnimation;
+            _enemyMaster.OnEnemyTargetLost -= SetIdleAnimation;
             _enemyMaster.OnEnemyDie -= DisableScript;
         }
 
@@ -36,16 +38,17 @@ namespace MindworksGames.MyGame
                 _animator.SetBool("IsWalking", true);
                 _animator.SetBool("IsRunning", true);
 
-                print("GOWNO");
             }
-            else if(!_enemyMaster.isPursuing || !_enemyMaster.CurrentTarget)
+            else if(!_enemyMaster.isPursuing)
             {
-                _animator.SetBool("IsWalking", false);
-                _animator.SetBool("IsRunning", false);
-                print("GOWNO 2 ");
-
-
+                SetIdleAnimation();
             }
+        }
+
+        void SetIdleAnimation()
+        {
+            _animator.SetBool("IsWalking", false);
+            _animator.SetBool("IsRunning", false);
         }
 
         protected override void SetAttackAnimation() { }

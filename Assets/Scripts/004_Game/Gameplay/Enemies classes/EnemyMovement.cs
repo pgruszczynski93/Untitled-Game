@@ -14,6 +14,7 @@ namespace MindworksGames.MyGame
 
         SphereCollider _playerTrigger;
         [SerializeField] Vector3 _targetRotation;
+        [SerializeField] NavMeshAgent _navMeshAgent;
         [SerializeField] EnemyMaster _enemyMaster;
 
 
@@ -43,6 +44,7 @@ namespace MindworksGames.MyGame
 
             _playerTrigger = GetComponent<SphereCollider>();
             _enemyMaster = GetComponent<EnemyMaster>();
+            _navMeshAgent = GetComponent<NavMeshAgent>();
 
             _headingAngle = Random.Range(0, 360);
             transform.rotation = Quaternion.Euler(0, _headingAngle, 0);

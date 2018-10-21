@@ -46,11 +46,13 @@ namespace MindworksGames.MyGame
         {
             if (joystickValue > runAnimationThreshold)
             {
+                _animator.SetBool("IsWalking", true);
                 _animator.SetBool("IsRunning", true);
             }
             else if (joystickValue > walkAnimationThreshold && joystickValue <= runAnimationThreshold)
             {
                 _animator.SetBool("IsWalking", true);
+                _animator.SetBool("IsRunning", false);
             }
             else
             {
