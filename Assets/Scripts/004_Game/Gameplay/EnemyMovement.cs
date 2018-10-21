@@ -37,7 +37,7 @@ namespace MindworksGames.MyGame
 
         void Start()
         {
-            StartCoroutine(RandomizeMoveDirectionRoutine());
+            //StartCoroutine(RandomizeMoveDirectionRoutine());
         }
 
         protected override void SetInitRefs()
