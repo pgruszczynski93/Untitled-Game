@@ -19,6 +19,7 @@ namespace MindworksGames.MyGame
         public event HumanoidEventHandler OnEnemyTargetLost;
         public event HumanoidEventHandler OnAnimationsPlaying;
 
+
         void SetInitRefs()
         {
             _currentTarget = GameObject.FindGameObjectWithTag("Player").transform;
@@ -52,6 +53,7 @@ namespace MindworksGames.MyGame
         public void CallOnEnemyTargetLost()
         {
             OnEnemyTargetLost?.Invoke();
+            _currentTarget = null;
         }
 
         public void CallOnEnemySetNavTarget(Transform target)

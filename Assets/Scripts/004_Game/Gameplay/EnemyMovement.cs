@@ -64,7 +64,6 @@ namespace MindworksGames.MyGame
                 ChangeHeadingAngle();
                 yield return new WaitForSeconds(Random.Range(1, 3));
             }
-
         }
 
     }
