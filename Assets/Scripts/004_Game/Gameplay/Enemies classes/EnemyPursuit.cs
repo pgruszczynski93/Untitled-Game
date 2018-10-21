@@ -25,8 +25,6 @@ namespace MindworksGames.MyGame
         void OnEnable()
         {
             SetInitRefs();
-
-
         }
 
         void OnDisable()
