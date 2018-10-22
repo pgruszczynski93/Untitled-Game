@@ -33,13 +33,13 @@ namespace MindworksGames.MyGame
 
         protected override void SetMovementAnimation()
         {
-            if(_enemyMaster.isPursuing)
+            if(_enemyMaster.isMoving)
             {
                 _animator.SetBool("IsWalking", true);
                 _animator.SetBool("IsRunning", true);
 
             }
-            else if(!_enemyMaster.isPursuing)
+            else if(!_enemyMaster.isMoving)
             {
                 SetIdleAnimation();
             }

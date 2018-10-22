@@ -15,6 +15,7 @@ namespace MindworksGames.MyGame
         protected Vector3 _currentTargetPos;
         protected Quaternion _forwardRotation;
         protected Quaternion _smoothedRotation;
+        protected Transform _humanoidTransform;
         [SerializeField] protected Rigidbody _rb;
 
         protected virtual void MoveHumanoid() { }
@@ -22,6 +23,7 @@ namespace MindworksGames.MyGame
         protected virtual void SetInitRefs()
         {
             _runMoveSpeed = _runMultiplerValue * _baseMoveSpeed;
+            _humanoidTransform = transform;
             _rb = GetComponent<Rigidbody>();
         }
     }

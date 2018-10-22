@@ -18,7 +18,7 @@ namespace MindworksGames.MyGame
         public event HumanoidEventHandler OnEnemyTargetLost;
         public event HumanoidEventHandler OnAnimationsPlaying;
 
-        public bool isPursuing;
+        public bool isMoving;
         public bool isNavPaused;
 
         public Transform CurrentTarget

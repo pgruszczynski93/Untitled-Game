@@ -7,78 +7,84 @@ namespace MindworksGames.MyGame
     public class EnemyMovement : HumanoidMovement
     {
 
-        [SerializeField] float _headingCeil;
-        [SerializeField] float _headingFloor;
-        [SerializeField] float _headingAngle;
-        [SerializeField] float _maxHeadingChange;
+        [SerializeField] float _checkRate;
+        [SerializeField] float _nextCheck;
+        [SerializeField] float _wanderRange;
 
-        SphereCollider _playerTrigger;
-        [SerializeField] Vector3 _targetRotation;
+        NavMeshHit _navMeshHit;
         [SerializeField] NavMeshAgent _navMeshAgent;
         [SerializeField] EnemyMaster _enemyMaster;
+        [SerializeField] Vector3 _wanderTarget;
 
 
         void OnEnable()
         {
             SetInitRefs();
 
-            //_enemyMaster.OnEnemyTargetLost += StartRandomizeDirection;
-            //_enemyMaster.OnEnemySetNavTarget += StopRandomizeDirection;
-
+            _enemyMaster.OnEnemyDie += DisableScript;
         }
 
         void OnDisable()
         {
-            //_enemyMaster.OnEnemyTargetLost -= StartRandomizeDirection;
-            //_enemyMaster.OnEnemySetNavTarget -= StopRandomizeDirection;
+
+            _enemyMaster.OnEnemyDie -= DisableScript;
         }
 
-        void Start()
+
+        void Update()
         {
-            //StartCoroutine(RandomizeMoveDirectionRoutine());
+            if(Time.time > _nextCheck)
+            {
+                _nextCheck = Time.time + _checkRate;
+                CheckMovingPossibility();
+            }    
         }
 
         protected override void SetInitRefs()
         {
-            base.SetInitRefs(); 
+            base.SetInitRefs();
 
-            _playerTrigger = GetComponent<SphereCollider>();
+            _wanderRange = 15f;
+            _checkRate = Random.Range(0.3f, 0.4f);
             _enemyMaster = GetComponent<EnemyMaster>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
-
-            _headingAngle = Random.Range(0, 360);
-            transform.rotation = Quaternion.Euler(0, _headingAngle, 0);
         }
 
-        void ChangeHeadingAngle()
+        void CheckMovingPossibility()
         {
-            _headingFloor = Mathf.Clamp(_headingAngle - _maxHeadingChange, 0, 360);
-            _headingCeil = Mathf.Clamp(_headingAngle + _maxHeadingChange, 0, 360);
-            _headingAngle = Random.Range(_headingFloor, _headingCeil);
-            _targetRotation = new Vector3(0, _headingAngle, 0);
-
-            transform.rotation = Quaternion.Euler(_targetRotation);
-        }
-
-        IEnumerator RandomizeMoveDirectionRoutine()
-        {
-            while (true)
+            if(_enemyMaster.CurrentTarget == null && !_enemyMaster.isMoving && !_enemyMaster.isNavPaused)
             {
-                ChangeHeadingAngle();
-                yield return new WaitForSeconds(Random.Range(1, 3));
+                if (IsRandomWanderTargetFound(_humanoidTransform.position, _wanderRange, out _wanderTarget))
+                {
+                    _navMeshAgent.SetDestination(_wanderTarget);
+                    _enemyMaster.isMoving = true;
+                    _enemyMaster.CallOnAnimationsPlaying();
+                }
             }
         }
 
-        void StartRandomizeDirection()
+        bool IsRandomWanderTargetFound(Vector3 center, float wanderRange, out Vector3 randomizedTarget)
         {
-            StartCoroutine(RandomizeMoveDirectionRoutine());
+            Vector3 randomNavMeshPoint = center + Random.insideUnitSphere * wanderRange;
+
+            if(NavMesh.SamplePosition(randomNavMeshPoint, out _navMeshHit, 1.0f, NavMesh.AllAreas))
+            {
+                randomizedTarget = _navMeshHit.position;
+                return true;
+
+            }
+            else
+            {
+                randomizedTarget = center;
+                return false;
+            }
         }
 
-        void StopRandomizeDirection(Transform target)
+        void DisableScript()
         {
-            print("STOP RANDOMIZE");
-            StopCoroutine(RandomizeMoveDirectionRoutine());
+            enabled = false;
         }
+
 
     }
 

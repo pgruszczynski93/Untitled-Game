@@ -43,11 +43,11 @@ namespace MindworksGames.MyGame
 
         void CheckIsTargetReached()
         {
-            if (_enemyMaster.isPursuing)
+            if (_enemyMaster.isMoving)
             {
                 if(_navMeshAgent.remainingDistance < _navMeshAgent.stoppingDistance)
                 {
-                    _enemyMaster.isPursuing = false;
+                    _enemyMaster.isMoving = false;
                     _enemyMaster.CallOnEnemyReachedNavTarget();
                 }
             }

@@ -52,7 +52,7 @@ namespace MindworksGames.MyGame
 
                 if (_navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
                 {
-                    _enemyMaster.isPursuing = true;
+                    _enemyMaster.isMoving = true;
                     _enemyMaster.CallOnAnimationsPlaying();
                 }
             }
